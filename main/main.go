@@ -40,7 +40,7 @@ func home(writer http.ResponseWriter, request *http.Request) {
 	tmpl, err := template.New("home").Parse(doc)
 
 	if err == nil {
-		tmpl.Execute(writer, nil)
+		tmpl.Execute(writer, request.URL.Path[1:])
 	}
 }
 
@@ -53,6 +53,7 @@ First Template
 </head>
 <body>
 <h4>First Template Sample</h4>
+<p>Hello {{.}}</p>
 </body>
 </html
 `
