@@ -24,19 +24,30 @@ amd ca;;s tje associated handles for the path whenever a match found.
 HANDLERS
 responsible for writing response headers and bodies.
 Almost any type ("Object") can be a handles, so long as it satisfies the http.Handler interface.
- */
+*/
 import (
-	"log"
 	"net/http"
 )
 
-func main() {
-	myMux := http.NewServeMux()
-	myMux.HandleFunc("/", home)
-	log.Fatal(http.ListenAndServe(":8080", myMux))
+type Person struct {
+	fName string
 }
 
-func home(writer http.ResponseWriter, request *http.Request) {
+func (p *Person) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("First Name: " + p.fName))
+}
+
+func main() {
+	//myMux := http.NewServeMux()
+	//myMux.HandleFunc("/", home)
+	//log.Fatal(http.ListenAndServe(":8080", myMux))
+
+	personOne := &Person{fName: "Vijay"}
+
+	http.ListenAndServe(":8080", personOne)
+}
+
+/*func home(writer http.ResponseWriter, request *http.Request) {
 
 	writer.Write([]byte("Hello Universe"))
-}
+}*/
