@@ -26,9 +26,10 @@ responsible for writing response headers and bodies.
 Almost any type ("Object") can be a handles, so long as it satisfies the http.Handler interface.
 */
 import (
-	"io/ioutil"
+	"bufio"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -39,10 +40,11 @@ func (this *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path[1:]
 
 	log.Println(path)
-	data, err := ioutil.ReadFile("/" + string(path))
+	f, err := os.Open("/" + string(path))
 
-	if (err == nil) {
+	if err == nil {
 		var contentType string
+		bufferReader := bufio.NewReader(f)
 
 		if strings.HasSuffix(path, ".css") {
 			contentType = "text/css"
@@ -60,7 +62,7 @@ func (this *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			contentType = "text/plain"
 		}
 		w.Header().Add("Content-Type", contentType)
-		w.Write(data)
+		bufferReader.WriteTo(w)
 	} else {
 		w.WriteHeader(404)
 		w.Write([]byte("404 - " + http.StatusText(404)))
