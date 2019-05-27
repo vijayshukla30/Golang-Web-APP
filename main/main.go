@@ -26,57 +26,35 @@ responsible for writing response headers and bodies.
 Almost any type ("Object") can be a handles, so long as it satisfies the http.Handler interface.
 */
 import (
-	"bufio"
-	"log"
 	"net/http"
-	"os"
-	"strings"
+	"text/template"
 )
 
-type MyHandler struct {
-}
-
-func (this *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	path := r.URL.Path[1:]
-
-	log.Println(path)
-	f, err := os.Open("/" + string(path))
-
-	if err == nil {
-		var contentType string
-		bufferReader := bufio.NewReader(f)
-
-		if strings.HasSuffix(path, ".css") {
-			contentType = "text/css"
-		} else if strings.HasSuffix(path, ".html") {
-			contentType = "text/html"
-		} else if strings.HasSuffix(path, ".js") {
-			contentType = "text/javascript"
-		} else if strings.HasSuffix(path, ".png") {
-			contentType = "text/png"
-		} else if strings.HasSuffix(path, ".jpg") {
-			contentType = "text/jpeg"
-		} else if strings.HasSuffix(path, ".mp4") {
-			contentType = "video/mp4"
-		} else {
-			contentType = "text/plain"
-		}
-		w.Header().Add("Content-Type", contentType)
-		bufferReader.WriteTo(w)
-	} else {
-		w.WriteHeader(404)
-		w.Write([]byte("404 - " + http.StatusText(404)))
-	}
-}
-
 func main() {
-	http.Handle("/", new(MyHandler))
+	http.HandleFunc("/", home)
 	http.ListenAndServe(":8080", nil)
 }
 
-/*func home(writer http.ResponseWriter, request *http.Request) {
+func home(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Add("Content-Type", "text/html")
+	tmpl, err := template.New("home").Parse(doc)
 
-	writer.Write([]byte("Hello Universe"))
-}*/
+	if err == nil {
+		tmpl.Execute(writer, nil)
+	}
+}
+
+const doc = `
+<html>
+<head>
+<title>
+First Template
+</title>
+</head>
+<body>
+<h4>First Template Sample</h4>
+</body>
+</html
+`
 
 //http://localhost:8080/home/vijay/Downloads/coderthemes.com/minton/material/index.html
