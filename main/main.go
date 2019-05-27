@@ -54,6 +54,8 @@ func (this *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			contentType = "text/png"
 		} else if strings.HasSuffix(path, ".jpg") {
 			contentType = "text/jpeg"
+		} else if strings.HasSuffix(path, ".mp4") {
+			contentType = "video/mp4"
 		} else {
 			contentType = "text/plain"
 		}
