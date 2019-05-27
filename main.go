@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"text/template"
 )
@@ -26,19 +27,22 @@ First Template
 `
 
 func toddFunc(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Add("Content-Type", "text/html")
-	tmpl, err := template.New("name").Parse(doc)
+	writer.Header().Set("Content-Type", "text/html")
 
-	if err == nil {
-		context := Context{"todd", "more go, please"}
-		tmpl.Execute(writer, context)
+	if request.URL.Path == "/" {
+		tmpl, err := template.New("name").Parse(doc)
+
+		if err == nil {
+			context := Context{"todd", "more go, please"}
+			tmpl.Execute(writer, context)
+		}
+	} else {
+		writer.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(writer, "<h1>We Couldn't Found Page</h1>")
 	}
 }
 
 func main() {
 	http.HandleFunc("/", toddFunc)
-	//http.HandleFunc("/todd", toddFunc)
 	http.ListenAndServe(":8080", nil)
 }
-
-//http://localhost:8080/home/vijay/Downloads/coderthemes.com/minton/material/index.html
