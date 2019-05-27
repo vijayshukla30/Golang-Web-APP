@@ -14,7 +14,16 @@ package main
 --Maps a URL to a func
 ---“Wrapper” around a function
 ---Turns any function to a handler
+*/
 
+/*
+SERVER-MUX
+compares incoming requests against a list of predefined URL paths,
+amd ca;;s tje associated handles for the path whenever a match found.
+
+HANDLERS
+responsible for writing response headers and bodies.
+Almost any type ("Object") can be a handles, so long as it satisfies the http.Handler interface.
  */
 import (
 	"log"
@@ -22,10 +31,12 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", home)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	myMux := http.NewServeMux()
+	myMux.HandleFunc("/", home)
+	log.Fatal(http.ListenAndServe(":8080", myMux))
 }
 
 func home(writer http.ResponseWriter, request *http.Request) {
+
 	writer.Write([]byte("Hello Universe"))
 }
