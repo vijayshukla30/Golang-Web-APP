@@ -29,6 +29,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type MyHandler struct {
@@ -41,6 +42,22 @@ func (this *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	data, err := ioutil.ReadFile("/" + string(path))
 
 	if (err == nil) {
+		var contentType string
+
+		if strings.HasSuffix(path, ".css") {
+			contentType = "text/css"
+		} else if strings.HasSuffix(path, ".html") {
+			contentType = "text/html"
+		} else if strings.HasSuffix(path, ".js") {
+			contentType = "text/javascript"
+		} else if strings.HasSuffix(path, ".png") {
+			contentType = "text/png"
+		} else if strings.HasSuffix(path, ".jpg") {
+			contentType = "text/jpeg"
+		} else {
+			contentType = "text/plain"
+		}
+		w.Header().Add("Content-Type", contentType)
 		w.Write(data)
 	} else {
 		w.WriteHeader(404)
@@ -57,3 +74,5 @@ func main() {
 
 	writer.Write([]byte("Hello Universe"))
 }*/
+
+//http://localhost:8080/home/vijay/Downloads/coderthemes.com/minton/material/index.html
