@@ -26,25 +26,31 @@ responsible for writing response headers and bodies.
 Almost any type ("Object") can be a handles, so long as it satisfies the http.Handler interface.
 */
 import (
+	"io/ioutil"
+	"log"
 	"net/http"
 )
 
-type Person struct {
-	fName string
+type MyHandler struct {
 }
 
-func (p *Person) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("First Name: " + p.fName))
+func (this *MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path[1:]
+
+	log.Println(path)
+	data, err := ioutil.ReadFile("/" + string(path))
+
+	if (err == nil) {
+		w.Write(data)
+	} else {
+		w.WriteHeader(404)
+		w.Write([]byte("404 - " + http.StatusText(404)))
+	}
 }
 
 func main() {
-	//myMux := http.NewServeMux()
-	//myMux.HandleFunc("/", home)
-	//log.Fatal(http.ListenAndServe(":8080", myMux))
-
-	personOne := &Person{fName: "Vijay"}
-
-	http.ListenAndServe(":8080", personOne)
+	http.Handle("/", new(MyHandler))
+	http.ListenAndServe(":8080", nil)
 }
 
 /*func home(writer http.ResponseWriter, request *http.Request) {
