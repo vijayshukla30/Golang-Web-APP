@@ -30,18 +30,9 @@ import (
 	"text/template"
 )
 
-func main() {
-	http.HandleFunc("/", home)
-	http.ListenAndServe(":8080", nil)
-}
-
-func home(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Add("Content-Type", "text/html")
-	tmpl, err := template.New("home").Parse(doc)
-
-	if err == nil {
-		tmpl.Execute(writer, request.URL.Path[1:])
-	}
+type Context struct {
+	FirstName string
+	Message   string
 }
 
 const doc = `
@@ -53,9 +44,35 @@ First Template
 </head>
 <body>
 <h4>First Template Sample</h4>
-<p>Hello {{.}}</p>
+<p>Hello {{.FirstName}}</p>
+<p>{{.Message}}</p>
 </body>
 </html
 `
+
+func toddFunc(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Add("Content-Type", "text/html")
+	tmpl, err := template.New("name").Parse(doc)
+
+	if err == nil {
+		context := Context{"todd", "more go, please"}
+		tmpl.Execute(writer, context)
+	}
+}
+
+func main() {
+	http.HandleFunc("/", home)
+	http.HandleFunc("/todd", toddFunc)
+	http.ListenAndServe(":8080", nil)
+}
+
+func home(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Add("Content-Type", "text/html")
+	tmpl, err := template.New("home").Parse(doc)
+
+	if err == nil {
+		tmpl.Execute(writer, request.URL.Path[1:])
+	}
+}
 
 //http://localhost:8080/home/vijay/Downloads/coderthemes.com/minton/material/index.html
