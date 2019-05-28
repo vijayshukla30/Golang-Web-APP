@@ -12,8 +12,16 @@ import (
 func Delete(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	id := vars["id"]
+	db := config.DbConn()
+	delForm, err := db.Prepare("DELETE FROM user WHERE id=?")
+	if err != nil {
+		panic(err.Error())
+	}
 
-	fmt.Fprint(writer, "<p>You are going to Delete "+id+"</p>")
+	delForm.Exec(id)
+	log.Println("Deleted")
+	defer db.Close()
+	http.Redirect(writer, request, "/", 301)
 }
 func Update(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)

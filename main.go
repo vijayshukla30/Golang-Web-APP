@@ -26,7 +26,7 @@ func main() {
 	r.HandleFunc("/edit/{id}", controllers.Edit).Methods("GET")
 	r.HandleFunc("/update/{id}", controllers.Update).Methods("PUT")
 	//Delete User
-	r.HandleFunc("/delete/{id}", controllers.Delete).Methods("DELETE")
+	r.HandleFunc("/delete/{id}", controllers.Delete)
 
 	r.NotFoundHandler = http.HandlerFunc(controllers.NotFound)
 
