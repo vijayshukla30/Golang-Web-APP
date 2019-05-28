@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"text/template"
 )
@@ -43,6 +45,19 @@ func toddFunc(writer http.ResponseWriter, request *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", toddFunc)
-	http.ListenAndServe(":8080", nil)
+	/*
+		PROCESS - 1
+		http.HandleFunc("/", toddFunc)
+		http.ListenAndServe(":8080", nil)*/
+
+	/*
+		PROCESS - 2
+	*/
+	/*mux := &http.ServeMux{}
+	mux.HandleFunc("/", toddFunc)
+	log.Fatal(http.ListenAndServe(":8080", mux))*/
+
+	r := mux.NewRouter()
+	r.HandleFunc("/", toddFunc)
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
