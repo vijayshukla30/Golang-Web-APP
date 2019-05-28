@@ -17,8 +17,17 @@ func main() {
 	//Controllers
 	r.HandleFunc("/", controllers.Home)
 	r.HandleFunc("/login", controllers.Login)
-	r.HandleFunc("/register", controllers.Register)
 	r.HandleFunc("/contact", controllers.Contact)
+
+	//Create a New User
+	r.HandleFunc("/register", controllers.Register).Methods("GET")
+	r.HandleFunc("/save", controllers.Save).Methods("POST")
+	//Update User
+	r.HandleFunc("/edit/{id}", controllers.Edit).Methods("GET")
+	r.HandleFunc("/update/{id}", controllers.Update).Methods("PUT")
+	//Delete User
+	r.HandleFunc("/delete/{id}", controllers.Delete).Methods("DELETE")
+
 	r.NotFoundHandler = http.HandlerFunc(controllers.NotFound)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
