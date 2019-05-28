@@ -17,10 +17,10 @@
     * log
     * github.com/gorilla/mux
 
-#Introduction
+# Introduction
 This application is basic Sample of CRUD (user) using **Gorilla Mux** for _routing_ and **HTML Templating** using _html/template_.
 
-#Installation
+# Installation
 [Download the archive](https://golang.org/dl/) and extract it into /usr/local, creating a Go tree in /usr/local/go. For example: 
 ```
 tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
@@ -78,7 +78,7 @@ http.ListenAndServe(":8080", r)
 ``` 
 and change the port
 
-#API
+# API
 ``/`` will return list of users from DB.
 
 ``/register`` can be used to create a user
@@ -87,7 +87,7 @@ and change the port
 
 ``/delete/{id}`` it will delete the user with the specified id
 
-#Packages
+# Packages
 
 **database/sql, fmt, html/template, net/http, log** are the default packages, installed during go installation.
 
