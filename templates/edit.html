@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
     <link href="static/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="static/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -220,43 +219,30 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Email</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>View</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Email</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>View</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    {{ range .}}
-                                        <tr>
-                                            <td>{{.Id}}</td>
-                                            <td>{{.Email}}</td>
-                                            <td>{{.FirstName}}</td>
-                                            <td>{{.LastName}}</td>
-                                            <td>View</td>
-                                            <td><a href="/edit/{{.Id}}" class="btn btn-primary btn-sm">Edit</a></td>
-                                            <td><a href="/delete/{{.Id}}" class="btn btn-danger btn-sm">Delete</a></td>
-                                        </tr>
-                                    {{ end }}
-                                    </tbody>
-                                </table>
+                                <form class="user" method="POST" action="/update">
+                                    <input type="hidden" name="uid" value="{{ .Id }}"/>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <input type="text" class="form-control form-control-user" id="firstName"
+                                                   name="firstName" placeholder="First Name"
+                                                   value="{{.FirstName}}">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control form-control-user" id="lastName"
+                                                   name="lastName" placeholder="Last Name"
+                                                   value="{{.LastName}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control form-control-user" id="email"
+                                               name="email" placeholder="Email Address"
+                                               value="{{.Email}}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Update
+                                    </button>
+                                    <hr>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -297,8 +283,5 @@
 <script src="static/js/bootstrap.bundle.min.js"></script>
 <script src="static/js/jquery.easing.min.js"></script>
 <script src="static/js/sb-admin-2.min.js"></script>
-<script src="static/js/jquery.dataTables.min.js"></script>
-<script src="static/js/dataTables.bootstrap4.min.js"></script>
-<script src="static/js/demo/datatables-demo.js"></script>
 </body>
 </html>

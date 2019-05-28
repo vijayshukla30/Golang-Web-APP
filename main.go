@@ -23,8 +23,8 @@ func main() {
 	r.HandleFunc("/register", controllers.Register).Methods("GET")
 	r.HandleFunc("/save", controllers.Save).Methods("POST")
 	//Update User
-	r.HandleFunc("/edit/{id}", controllers.Edit).Methods("GET")
-	r.HandleFunc("/update/{id}", controllers.Update).Methods("PUT")
+	r.HandleFunc("/edit/{id}", controllers.Edit)
+	r.HandleFunc("/update", controllers.Update).Methods("POST")
 	//Delete User
 	r.HandleFunc("/delete/{id}", controllers.Delete)
 
