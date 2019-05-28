@@ -28,36 +28,27 @@ First Template
 </html
 `
 
-func toddFunc(writer http.ResponseWriter, request *http.Request) {
+func Home(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "text/html")
-
-	if request.URL.Path == "/" {
-		tmpl, err := template.New("name").Parse(doc)
-
-		if err == nil {
-			context := Context{"todd", "more go, please"}
-			tmpl.Execute(writer, context)
-		}
-	} else {
-		writer.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(writer, "<h1>We Couldn't Found Page</h1>")
+	tmpl, err := template.New("name").Parse(doc)
+	if err == nil {
+		context := Context{"todd", "more go, please"}
+		tmpl.Execute(writer, context)
 	}
 }
 
 func main() {
-	/*
-		PROCESS - 1
-		http.HandleFunc("/", toddFunc)
-		http.ListenAndServe(":8080", nil)*/
-
-	/*
-		PROCESS - 2
-	*/
-	/*mux := &http.ServeMux{}
-	mux.HandleFunc("/", toddFunc)
-	log.Fatal(http.ListenAndServe(":8080", mux))*/
-
 	r := mux.NewRouter()
-	r.HandleFunc("/", toddFunc)
+	r.HandleFunc("/", Home)
+	r.HandleFunc("/contact", Contact)
+	r.NotFoundHandler = http.HandlerFunc(NotFound)
 	log.Fatal(http.ListenAndServe(":8080", r))
+}
+
+func Contact(writer http.ResponseWriter, request *http.Request) {
+	fmt.Fprint(writer, "<h1>Contact Us</h1>")
+}
+func NotFound(writer http.ResponseWriter, request *http.Request) {
+	writer.WriteHeader(http.StatusNotFound)
+	fmt.Fprint(writer, "<h1>Page Not Exist</h1>")
 }
