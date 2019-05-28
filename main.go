@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"html/template"
 	"log"
 	"net/http"
-	"text/template"
 )
 
 type Context struct {
@@ -34,10 +34,10 @@ func main() {
 	r.HandleFunc("/contact", ContactFunc)
 	r.NotFoundHandler = http.HandlerFunc(NotFoundFunc)
 	//Static File Serve
-	/*r.
-	PathPrefix("/static/").
-	Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	*/
+	r.
+		PathPrefix("/static/").
+		Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
@@ -53,10 +53,11 @@ func ContactFunc(writer http.ResponseWriter, request *http.Request) {
 }
 
 func ToddFunc(writer http.ResponseWriter, request *http.Request) {
-	tmpl, err := template.New("name").Parse(doc)
-
+	tmpl, err := template.ParseFiles("templates/index.html")
 	if err == nil {
 		context := Context{"todd", "more go, please"}
-		log.Fatal(tmpl.Execute(writer, context))
+		tmpl.Execute(writer, context)
+	} else {
+		fmt.Fprint(writer, err)
 	}
 }
