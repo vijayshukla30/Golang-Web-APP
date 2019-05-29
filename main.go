@@ -20,8 +20,9 @@ func main() {
 	r.HandleFunc("/contact", controllers.Contact)
 
 	//Create a New User
-	r.HandleFunc("/register", controllers.Register).Methods("GET")
+	r.HandleFunc("/register", controllers.Register)
 	r.HandleFunc("/save", controllers.Save).Methods("POST")
+	r.HandleFunc("/show/{id}", controllers.Show)
 	//Update User
 	r.HandleFunc("/edit/{id}", controllers.Edit)
 	r.HandleFunc("/update", controllers.Update).Methods("POST")

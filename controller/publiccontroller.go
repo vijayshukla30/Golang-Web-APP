@@ -9,7 +9,7 @@ import (
 )
 
 func Home(writer http.ResponseWriter, request *http.Request) {
-	tmpl, err := template.ParseFiles("templates/index.html")
+	tmpl, err := template.ParseFiles("templates/index.html", "templates/base.html")
 	if err == nil {
 		db := dbconn.DbConn()
 		selDB, err := db.Query("SELECT * FROM user ORDER BY id DESC")
@@ -38,8 +38,7 @@ func Home(writer http.ResponseWriter, request *http.Request) {
 
 			res = append(res, user)
 		}
-		fmt.Println(res)
-		tmpl.Execute(writer, res)
+		tmpl.ExecuteTemplate(writer, "base", res)
 		defer db.Close()
 	} else {
 		fmt.Fprint(writer, err)

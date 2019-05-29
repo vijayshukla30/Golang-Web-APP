@@ -42,23 +42,19 @@
                                 <th>Email</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
-                                <th>View</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            {{ range .}}
-                                <tr>
-                                    <td>{{.Id}}</td>
-                                    <td>{{.Email}}</td>
-                                    <td>{{.FirstName}}</td>
-                                    <td>{{.LastName}}</td>
-                                    <td><a href="/show/{{.Id}}" class="btn btn-success btn-sm">View</a></td>
-                                    <td><a href="/edit/{{.Id}}" class="btn btn-primary btn-sm">Edit</a></td>
-                                    <td><a href="/delete/{{.Id}}" class="btn btn-danger btn-sm">Delete</a></td>
-                                </tr>
-                            {{ end }}
+                            <tr>
+                                <td>{{.Id}}</td>
+                                <td>{{.Email}}</td>
+                                <td>{{.FirstName}}</td>
+                                <td>{{.LastName}}</td>
+                                <td><a href="/edit/{{.Id}}" class="btn btn-primary btn-sm">Edit</a></td>
+                                <td><a href="/delete/{{.Id}}" class="btn btn-danger btn-sm">Delete</a></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
